@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Setter
 public class Entity {
 
-    private Long id;
-    private String username;
-    private String password;
+    private String currency;
+    private String value;
 }

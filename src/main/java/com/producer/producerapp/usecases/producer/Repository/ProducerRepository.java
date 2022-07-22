@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 public class ProducerRepository
 {
     public int produce(Entity entityInfo) {
-        System.out.println(entityInfo.getUsername());
-        System.out.println(entityInfo.getPassword());
+        System.out.println(entityInfo.getCurrency());
+        System.out.println(entityInfo.getValue());
         return 1;
     }
 }
