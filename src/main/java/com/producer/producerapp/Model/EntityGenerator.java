@@ -6,7 +6,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.producer.producerapp.Producer.ProducerController;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -16,18 +19,21 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 
-public class EntityGenerator{
+public class EntityGenerator {
 
     public static String CurName = "";
     public static String ForexBuying = "";
     public static String ForexSelling = "";
     public static String BanknoteBuying = "";
     public static String BanknoteSelling = "";
+    public static Entity message;
+
+    @Autowired
+    KafkaTemplate<String, String> kafkaTemplate;
+
+    private static final String TOPIC = "NewTopic";
 
     public void EntityGen() {
-        ProducerController pc = new ProducerController();
-
-
         File file = new File("C:\\Users\\can.kilic\\Desktop\\ProducerConsumer\\today.xml");
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = null;
@@ -61,14 +67,19 @@ public class EntityGenerator{
                 BanknoteBuyingMethod(BanknoteBuying);
                 BanknoteSellingMethod(BanknoteSelling);
 
+                message = Entity.builder()
+                        .CurrencyName(EntityGenerator.CurrencyNameMethod(CurName))
+                        .ForexBuying(EntityGenerator.ForexBuyingMethod(ForexBuying))
+                        .ForexSelling(EntityGenerator.ForexSellingMethod(ForexSelling))
+                        .BanknoteBuying(EntityGenerator.BanknoteBuyingMethod(BanknoteBuying))
+                        .BanknoteSelling(EntityGenerator.BanknoteSellingMethod(BanknoteSelling))
+                        .build();
 
-/*
-                System.out.println("Currency Name: " + eElement.getElementsByTagName("CurrencyName").item(0).getTextContent());
-                System.out.println("Forex Buying: " + eElement.getElementsByTagName("ForexBuying").item(0).getTextContent());
-                System.out.println("Forex Selling: " + eElement.getElementsByTagName("ForexSelling").item(0).getTextContent());
-                System.out.println("BanknoteBuying: " + eElement.getElementsByTagName("BanknoteBuying").item(0).getTextContent());
-                System.out.println("BanknoteSelling: " + eElement.getElementsByTagName("BanknoteSelling").item(0).getTextContent());
-                 */
+                kafkaTemplate.send(TOPIC, EntityGenerator.message.toString());
+                kafkaTemplate.flush();
+
+               // System.out.print(message.toString());
+
             }
         }
     }

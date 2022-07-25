@@ -1,5 +1,6 @@
 package com.producer.producerapp;
 
+import com.producer.producerapp.Model.EntityGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
