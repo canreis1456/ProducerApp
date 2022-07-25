@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProducerController {
 
     // Autowiring Kafka Template
-    @Autowired KafkaTemplate<String, Entity> kafkaTemplate;
+    @Autowired KafkaTemplate<String, String> kafkaTemplate;
 
     private static final String TOPIC = "NewTopic";
 
@@ -27,7 +27,7 @@ public class ProducerController {
                 .currencyName("dollar").currencyValue(17.66).build();
 
         // Sending the message
-        kafkaTemplate.send(TOPIC, message);
+        kafkaTemplate.send(TOPIC, message.toString());
 
         return "Published Successfully";
     }

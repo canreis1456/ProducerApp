@@ -11,4 +11,10 @@ import lombok.Setter;
 public class Entity {
     private final String currencyName;
     private final double currencyValue;
+
+
+    @Override
+    public String toString() {
+        return this.currencyName + " + " + this.currencyValue;
+    }
 }
