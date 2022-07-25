@@ -24,29 +24,12 @@ public class ProducerController extends EntityGenerator{
     KafkaTemplate<String, String> kafkaTemplate;
 
     private static final String TOPIC = "NewTopic";
-
-
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 100000)
     @GetMapping("/publish")
     public void produce()
     {
-        String CurNameM = EntityGenerator.CurName;
-        String ForBuyM = EntityGenerator.ForexBuying;
-        String ForSellM = EntityGenerator.ForexSelling;
-        String BankBuyM = EntityGenerator.BanknoteBuying;
-        String BankSellM = EntityGenerator.BanknoteSelling;
-
-        System.out.println(CurNameM + " + " + ForBuyM + " + " + ForSellM + " + " + BankBuyM + " + " + BankSellM);
-
-        Entity message = Entity.builder()
-                .CurrencyName(EntityGenerator.CurrencyNameMethod(CurNameM))
-                .ForexBuying(EntityGenerator.ForexBuyingMethod(ForBuyM))
-                .ForexSelling(EntityGenerator.ForexSellingMethod(ForSellM))
-                .BanknoteBuying(EntityGenerator.BanknoteBuyingMethod(BankBuyM))
-                .BanknoteSelling(EntityGenerator.BanknoteSellingMethod(BankSellM))
-                .build();
-
-        kafkaTemplate.send(TOPIC, message.toString());
         EntityGen();
+        //kafkaTemplate.send(TOPIC, EntityGenerator.message.toString());
+
     }
 }
